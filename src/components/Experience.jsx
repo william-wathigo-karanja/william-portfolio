@@ -1,65 +1,105 @@
-import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { motion } from "framer-motion";
 
-export default function Experience() {
+export default function PortfolioNavbar() {
+  const [expanded, setExpanded] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("#hero");
+
+  const handleScroll = (e, targetId) => {
+    e.preventDefault();
+    const target = document.querySelector(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+      setExpanded(false);
+    }
+  };
+
+  // Add scroll detection
+  useEffect(() => {
+    const handleScrollEffect = () => {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 40);
+
+      const sections = [
+        "#hero",
+        "#about",
+        "#skills",
+        "#projects",
+        "#experience",
+        "#contact",
+      ];
+      for (let id of sections) {
+        const section = document.querySelector(id);
+        if (
+          section &&
+          scrollY >= section.offsetTop - 100 &&
+          scrollY < section.offsetTop + section.offsetHeight - 100
+        ) {
+          setActiveSection(id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollEffect);
+    return () => window.removeEventListener("scroll", handleScrollEffect);
+  }, []);
+
   return (
-    <section id="experience" className="py-5 bg-white">
-      <Container>
-        <Row className="mb-4 text-center">
-          <Col>
-            <h2 className="fw-bold">Experience</h2>
-            <p className="text-muted">
-              Practical industry experience that strengthened my technical and professional skills.
-            </p>
-          </Col>
-        </Row>
+    <motion.nav
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <Navbar
+        expand="lg"
+        fixed="top"
+        expanded={expanded}
+        className={`py-3 ${scrolled ? "navbar-scrolled shadow-sm" : "bg-white"}`}
+        style={{ transition: "all 0.3s ease" }}
+      >
+        <Container>
+          {/* Brand Name */}
+          <Navbar.Brand
+            href="#hero"
+            onClick={(e) => handleScroll(e, "#hero")}
+            className="fw-bold text-primary"
+            style={{ letterSpacing: "0.5px" }}
+          >
+            William<span className="text-dark">.</span>
+          </Navbar.Brand>
 
-        <Row className="justify-content-center">
-          <Col md={10}>
-            <Card className="shadow-sm border-0 mb-4">
-              <Card.Body>
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
-                  <div>
-                    <Card.Title className="fw-bold text-primary mb-1">
-                      Business Development & Information Technology Intern
-                    </Card.Title>
-                    <Card.Subtitle className="text-muted">
-                      OML Africa Logistics — Mai Mahiu, Kenya
-                    </Card.Subtitle>
-                  </div>
-                  <div className="text-md-end text-muted small">
-                    July 2025 – September 2025
-                  </div>
-                </div>
+          <Navbar.Toggle
+            aria-controls="navbar-nav"
+            onClick={() => setExpanded(expanded ? false : "expanded")}
+          />
 
-                <Card.Text>
-                  <ul className="mb-0">
-                    <li>
-                      Assisted in asset tagging and data upload on the Fleet Wave system, improving
-                      record management and data accuracy.
-                    </li>
-                    <li>
-                      Reviewed cybersecurity documentation and identified areas for policy improvement
-                      to strengthen compliance with IT standards.
-                    </li>
-                    <li>
-                      Collaborated with a third-party software development partner during the website revamp,
-                      ensuring business goals were met.
-                    </li>
-                    <li>
-                      Provided technical feedback and contributed to website functionality and user experience improvements.
-                    </li>
-                    <li>
-                      Demonstrated teamwork, communication, and analytical problem-solving while supporting
-                      the Business Development & IT team.
-                    </li>
-                  </ul>
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </section>
+          <Navbar.Collapse id="navbar-nav" className="justify-content-end">
+            <Nav className="gap-3 fw-semibold">
+              {[
+                { id: "#about", label: "About" },
+                { id: "#skills", label: "Skills" },
+                { id: "#projects", label: "Projects" },
+                { id: "#experience", label: "Experience" },
+                { id: "#contact", label: "Contact" },
+              ].map((link) => (
+                <Nav.Link
+                  key={link.id}
+                  href={link.id}
+                  onClick={(e) => handleScroll(e, link.id)}
+                  className={`nav-link-custom ${
+                    activeSection === link.id ? "active" : ""
+                  }`}
+                >
+                  {link.label}
+                </Nav.Link>
+              ))}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </motion.nav>
   );
 }

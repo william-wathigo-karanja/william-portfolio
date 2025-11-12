@@ -1,79 +1,168 @@
-:root {
-  --accent: #0d6efd; /* your main blue accent */
-  --light-gray: #f5f7fa;
-  --text-color: #212529;
-  --heading-color: #0b1d3a;
-}
-
+/* ===== GLOBAL RESET ===== */
 body {
-  color: var(--text-color);
+  font-family: "Poppins", "Open Sans", sans-serif;
   background-color: #ffffff;
-  font-family: "Lato", "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  line-height: 1.7;
-  margin: 0;
-  padding: 0;
-}
-
-html {
+  color: #212529;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
+/* ===== COLORS ===== */
+:root {
+  --primary-color: #0b1d3a;
+  --accent-color: #007bff;
+  --light-bg: #f6f8fb;
+  --gradient-bg: linear-gradient(135deg, #f8f9fc 0%, #eef3f9 100%);
+}
 
-h1, h2, h3, h4, h5 {
-  color: var(--heading-color);
+/* ===== HEADINGS ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.5px;
 }
 
-section {
-  padding: 5rem 0;
+h1 {
+  font-size: 2.8rem;
+  line-height: 1.2;
 }
 
-.section-light {
-  background-color: var(--light-gray);
-}
-
-/* Card styling */
-.card {
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  transition: transform .2s, box-shadow .2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-}
-
-/* Buttons */
-.btn-primary {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  border-radius: 30px;
-  padding: 0.6rem 1.5rem;
-  font-weight: 600;
-  transition: 0.2s ease-in-out;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0b5ed7;
-}
-
-/* Section Headings */
-section h2 {
-  font-size: 2.3rem;
+h2 {
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  section {
-    padding: 3.5rem 1rem;
-  }
+/* ===== BUTTONS ===== */
+.btn {
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
 
-  h1 {
-    font-size: 1.8rem;
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.25);
+}
+
+/* Outline Button */
+.btn-outline-primary {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+/* ===== SECTION SPACING ===== */
+section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  position: relative;
+}
+
+/* ===== CARD STYLING ===== */
+.card {
+  border-radius: 16px;
+  border: none;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== IMAGES ===== */
+img {
+  user-select: none;
+}
+
+/* Hero circular image */
+.hero-photo img {
+  transition: transform 0.4s ease;
+}
+
+.hero-photo img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== DIVIDERS ===== */
+.wave-divider {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 100px;
+}
+
+/* ===== CONTACT ===== */
+footer {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+footer a:hover {
+  opacity: 0.8;
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-up {
+  animation: fadeUp 0.8s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.navbar {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ===== NAVBAR SCROLL EFFECTS ===== */
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Highlight active link */
+.nav-link-custom {
+  color: #0b1d3a !important;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link-custom.active {
+  color: #007bff !important;
+}
+
+.nav-link-custom.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+  border-radius: 1px;
 }
