@@ -1,105 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { motion } from "framer-motion";
+import SectionDivider from "./SectionDivider";
+import { Briefcase, People } from "react-bootstrap-icons";
 
-export default function PortfolioNavbar() {
-  const [expanded, setExpanded] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("#hero");
-
-  const handleScroll = (e, targetId) => {
-    e.preventDefault();
-    const target = document.querySelector(targetId);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-      setExpanded(false);
-    }
-  };
-
-  // Add scroll detection
-  useEffect(() => {
-    const handleScrollEffect = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 40);
-
-      const sections = [
-        "#hero",
-        "#about",
-        "#skills",
-        "#projects",
-        "#experience",
-        "#contact",
-      ];
-      for (let id of sections) {
-        const section = document.querySelector(id);
-        if (
-          section &&
-          scrollY >= section.offsetTop - 100 &&
-          scrollY < section.offsetTop + section.offsetHeight - 100
-        ) {
-          setActiveSection(id);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScrollEffect);
-    return () => window.removeEventListener("scroll", handleScrollEffect);
-  }, []);
+export default function Experience() {
+  const experiences = [
+    {
+      title: "Software Development Intern",
+      organization: "OML Africa Logistics",
+      period: "July 2025 – September 2025",
+      description:
+        "Contributed to internal web tools for logistics and data tracking. Assisted in developing responsive UI layouts, optimizing database queries, and improving application performance.",
+      icon: <Briefcase size={28} className="text-primary" />,
+    },
+    {
+      title: "Facilitator & Volunteer",
+      organization: "The Ascent Leadership Program",
+      period: "2019 – 2025",
+      description:
+        "Began as a trainee in 2019 and later transitioned into facilitation and mentorship roles from 2022 onward, assisting in sessions, mentoring peers, and supporting leadership development activities.",
+      icon: <People size={28} className="text-primary" />,
+    },
+  ];
 
   return (
-    <motion.nav
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <Navbar
-        expand="lg"
-        fixed="top"
-        expanded={expanded}
-        className={`py-3 ${scrolled ? "navbar-scrolled shadow-sm" : "bg-white"}`}
-        style={{ transition: "all 0.3s ease" }}
+    <>
+      {/* Wave divider from Projects section */}
+      <SectionDivider flip />
+
+      <section
+        id="experience"
+        className="py-5 text-center"
+        style={{
+          background: "linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%)",
+        }}
       >
         <Container>
-          {/* Brand Name */}
-          <Navbar.Brand
-            href="#hero"
-            onClick={(e) => handleScroll(e, "#hero")}
-            className="fw-bold text-primary"
-            style={{ letterSpacing: "0.5px" }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
           >
-            William<span className="text-dark">.</span>
-          </Navbar.Brand>
+            <h2 className="fw-bold mb-4" style={{ color: "#0b1d3a" }}>
+              Experience & Leadership
+            </h2>
+            <p className="text-muted mb-5">
+              A blend of professional and volunteer experiences that shaped my
+              technical and leadership journey.
+            </p>
+          </motion.div>
 
-          <Navbar.Toggle
-            aria-controls="navbar-nav"
-            onClick={() => setExpanded(expanded ? false : "expanded")}
-          />
-
-          <Navbar.Collapse id="navbar-nav" className="justify-content-end">
-            <Nav className="gap-3 fw-semibold">
-              {[
-                { id: "#about", label: "About" },
-                { id: "#skills", label: "Skills" },
-                { id: "#projects", label: "Projects" },
-                { id: "#experience", label: "Experience" },
-                { id: "#contact", label: "Contact" },
-              ].map((link) => (
-                <Nav.Link
-                  key={link.id}
-                  href={link.id}
-                  onClick={(e) => handleScroll(e, link.id)}
-                  className={`nav-link-custom ${
-                    activeSection === link.id ? "active" : ""
-                  }`}
+          <Row className="g-4 justify-content-center">
+            {experiences.map((exp, index) => (
+              <Col md={6} key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: index * 0.2,
+                    ease: "easeOut",
+                  }}
+                  viewport={{ once: true }}
                 >
-                  {link.label}
-                </Nav.Link>
-              ))}
-            </Nav>
-          </Navbar.Collapse>
+                  <Card
+                    className="border-0 shadow-sm text-start p-4 h-100"
+                    style={{
+                      borderRadius: "16px",
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    <div className="d-flex align-items-center mb-3">
+                      <div className="me-3">{exp.icon}</div>
+                      <div>
+                        <h5 className="fw-semibold mb-1">{exp.title}</h5>
+                        <div
+                          className="text-primary fw-semibold small"
+                          style={{ letterSpacing: "0.3px" }}
+                        >
+                          {exp.organization}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      className="text-muted small mb-2"
+                      style={{ fontStyle: "italic" }}
+                    >
+                      {exp.period}
+                    </div>
+
+                    <p className="text-muted mb-0" style={{ lineHeight: "1.8" }}>
+                      {exp.description}
+                    </p>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
         </Container>
-      </Navbar>
-    </motion.nav>
+      </section>
+    </>
   );
 }
